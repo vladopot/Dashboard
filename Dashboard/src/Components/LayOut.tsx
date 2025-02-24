@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Outlet } from 'react-router'
 import { Button, Layout, Menu, Select } from "antd";
+import { useSelector, useDispatch } from 'react-redux'
 import {
     MenuFoldOutlined,
     MenuUnfoldOutlined,
@@ -9,9 +10,18 @@ import {
   } from '@ant-design/icons';
 import Sider from 'antd/es/layout/Sider';
 import { Content, Header } from 'antd/es/layout/layout';
+import { RootState } from '../Redux/store';
+import { toogleLanguage } from '../Redux/lLanguageSlice';
+import { EngLangDatas, RusLangDatas } from '../models/languageDatas';
 
 const LayOut = () => {
     const [callapsed, setCollapsed] = useState(false);
+    const language = useSelector((state: RootState) => state.language.value);
+    const dispatch = useDispatch();
+
+    useEffect(() => window.innerWidth < 768 ? setCollapsed(true) : setCollapsed(false) ,[])
+
+    window.addEventListener('resize', () => window.innerWidth < 768 ? setCollapsed(true) : setCollapsed(false));
 
   return (
     <>
@@ -19,7 +29,7 @@ const LayOut = () => {
             <Sider
                 trigger={null}
                 collapsible
-                collapsed={callapsed}
+                collapsed={callapsed || window.innerWidth < 768}
                 style={{
                     height: '100vh',
                     position: 'sticky',
@@ -33,12 +43,12 @@ const LayOut = () => {
                         {
                             key: '1',
                             icon: <UserOutlined />,
-                            label: 'Users'
+                            label: language === 'ENG' ? EngLangDatas.SideBar.UsersBtn : RusLangDatas.SideBar.UsersBtn
                         },
                         {
                             key: '2',
                             icon: <StockOutlined />,
-                            label: 'Stats',
+                            label: language === 'ENG' ? EngLangDatas.SideBar.StatsBtn : RusLangDatas.SideBar.StatsBtn,
                         }
                     ]}>
                     
@@ -53,6 +63,7 @@ const LayOut = () => {
                             alignItems: 'center'
                         }}>
                     <Button
+                        disabled={callapsed ? true : false}
                         type='text'
                         icon={callapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
                         onClick={() => setCollapsed(!callapsed)}
@@ -60,18 +71,18 @@ const LayOut = () => {
                             fontSize: '16px',
                             width: 64,
                             height: 64,
-                        }}>
-                        
+                        }}> 
                     </Button>
                     <Select
-                        defaultValue={'RUS'}
+                        onChange={() => dispatch(toogleLanguage())}
+                        defaultValue={'ENG'}
                         style={{
                             width: 100,
                             marginRight: 16
                         }}
                         options={[
-                            { value: 'RUS', label: <span>RUS</span> },
-                            { value: 'ENG', label: <span>ENG</span> }
+                            { value: 'ENG', label: <span>ENG</span> },
+                            { value: 'RUS', label: <span>RUS</span> }
                         ]}/>
                 </Header>
                 <Content
