@@ -3,7 +3,9 @@ interface langDataInterface {
         UsersBtn: string,
         StatsBtn: string
     }
-    UserList: []
+    UserList: {
+        tittle: string
+    }
 }
 
 export const RusLangDatas: langDataInterface = {
@@ -11,7 +13,9 @@ export const RusLangDatas: langDataInterface = {
         UsersBtn: 'Пользователи',
         StatsBtn: "Статистика"
     },
-    UserList: []
+    UserList: {
+        tittle: 'Пользователи'
+    }
 }
 
 export const EngLangDatas: langDataInterface = {
@@ -19,5 +23,7 @@ export const EngLangDatas: langDataInterface = {
         UsersBtn: 'Users',
         StatsBtn: "Stats"
     },
-    UserList: []
+    UserList: {
+        tittle: 'Users'
+    }
 }

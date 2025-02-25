@@ -16,16 +16,20 @@ import { EngLangDatas, RusLangDatas } from '../models/languageDatas';
 
 const LayOut = () => {
     const [callapsed, setCollapsed] = useState(false);
+    const [disable, setDisable] = useState(false);
     const language = useSelector((state: RootState) => state.language.value);
     const dispatch = useDispatch();
 
     useEffect(() => window.innerWidth < 768 ? setCollapsed(true) : setCollapsed(false) ,[])
 
-    window.addEventListener('resize', () => window.innerWidth < 768 ? setCollapsed(true) : setCollapsed(false));
+    window.addEventListener('resize', () => window.innerWidth < 768 ? setDisable(true) : setDisable(false));
 
   return (
     <>
-        <Layout>
+        <Layout
+            style={{
+                height: '100vh'
+            }}>
             <Sider
                 trigger={null}
                 collapsible
@@ -63,7 +67,7 @@ const LayOut = () => {
                             alignItems: 'center'
                         }}>
                     <Button
-                        disabled={callapsed ? true : false}
+                        disabled={disable ? true : false}
                         type='text'
                         icon={callapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
                         onClick={() => setCollapsed(!callapsed)}
@@ -93,9 +97,7 @@ const LayOut = () => {
                         background: 'white',
                         borderRadius: 5
                     }}>
-                    <div className="main">
-                        <Outlet />
-                    </div>
+                    <Outlet />
                 </Content>
             </Layout>
         </Layout>
