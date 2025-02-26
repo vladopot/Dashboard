@@ -1,0 +1,31 @@
+image: node:20.10.0
+
+stages:
+  - build
+  - deploy
+
+cache:
+  paths:
+    - Dashboard/node_modules/
+
+before_script:
+  - cd Dashboard
+  - npm install
+
+build:
+  stage: build
+  script:
+    - npm run build
+    - mv dist ../public
+  artifacts:
+    paths:
+      - public
+  only:
+    - develop
+
+deploy:
+  stage: deploy
+  script:
+    - echo "Deployed!"
+  only:
+    - develop
