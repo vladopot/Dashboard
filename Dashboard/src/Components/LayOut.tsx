@@ -26,10 +26,7 @@ const LayOut = () => {
 
   return (
     <>
-        <Layout
-            style={{
-                height: '100vh'
-            }}>
+        <Layout>
             <Sider
                 trigger={null}
                 collapsible

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import './UserList.scss'
+import Styles from './UserList.module.scss'
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { EngLangDatas, RusLangDatas } from '../../models/languageDatas';
@@ -9,11 +9,13 @@ import Search from 'antd/es/input/Search';
 import { ResponseModel, userModel } from '../../models/ResponseModel';
 import { addData } from '../../Redux/UsersSlice';
 import { RightOutlined } from '@ant-design/icons';
+import { Link } from 'react-router';
 
 const UserList = () => {
   const link = 'https://dummyjson.com/users';
   const language = useSelector((state: RootState) => state.language.value);
   const [currentPage, sePage] = useState(1);
+  const [usersToShow, setUsers] = useState<userModel[]>();
   const users: userModel[] = useSelector((state: RootState) => state.users.users);
   const dispatch = useDispatch();
 
@@ -22,24 +24,27 @@ const UserList = () => {
         axios.get<ResponseModel>(link)
       .then(response => {
         const data = response.data.users;
-        dispatch(addData(data))
+        dispatch(addData(data));
+        setUsers(data);
       })
       .catch(error => {
         console.error(error);
       });
+      } else {
+        setUsers(users);
       }}, []);
 
   return (
-    <div className="main">
+    <div className={Styles.main}>
       <h2>{language === 'ENG' ? EngLangDatas.UserList.tittle : RusLangDatas.UserList.tittle}</h2>
       <div
-          className="search_wrapper"
           style={{
             display: 'flex',
             justifyContent: 'flex-end',
             alignItems: 'center'
           }}>
-        <Search 
+        <Search
+          onSearch={(searchString) => setUsers(users.filter(e => e.firstName.includes(searchString) || e.lastName.includes(searchString)))}
           placeholder="input search text"
           enterButton
           size='large'
@@ -47,18 +52,20 @@ const UserList = () => {
             maxWidth: '200px'
           }}/>
       </div>
-      <div className="userList">
+      <div className={Styles.userList}>
           {
-            users.slice((currentPage - 1) * 5, currentPage * 5).map(e => (
-              <div key={e.id} className="user">
-                <div className="img_wrapper">
+            usersToShow?.slice((currentPage - 1) * 5, currentPage * 5).map(e => (
+              <div key={e.id} className={Styles.user}>
+                <div className={Styles.img_wrapper}>
                   <img src={e.image} alt="user_icon" />
                 </div>
-                <div className="user_credentials">
-                  <p className='full_Name'>{`${e.firstName} ${e.lastName}`}</p>
-                  <p className="user_address">{e.address.address}</p>
+                <div>
+                  <p>{`${e.firstName} ${e.lastName}`}</p>
+                  <p>{e.address.address}</p>
                 </div>
-                <Button style={{marginTop: 15}} type='text' icon={<RightOutlined />} />
+                <Link to={`${e.id}`}>
+                  <Button style={{marginTop: 15}} type='text' icon={<RightOutlined />} />
+                </Link>
               </div>
             ))
           }
@@ -66,13 +73,12 @@ const UserList = () => {
       <Pagination
         onChange={(page) => {
           sePage(page);
-          console.log(currentPage);
         }}
         simple
         defaultCurrent={1}
         pageSize={5}
         align='center'
-        total={users.length}
+        total={usersToShow?.length}
          />
     </div>
   )
