@@ -36,10 +36,10 @@ jobs:
           node-version: 20
           cache: 'npm'
       - name: Install dependencies
-        working-directory: ./Dashboard/Dashboard
+        working-directory: ./Dashboard
         run: npm ci
       - name: Build
-        working-directory: ./Dashboard/Dashboard
+        working-directory: ./Dashboard
         run: npm run build
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -47,7 +47,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload dist folder
-          path: './Dashboard/Dashboard/dist'
+          path: './Dashboard/dist'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
