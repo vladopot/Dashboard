@@ -8,5 +8,5 @@ export default defineConfig({
     react(),
     Inspect()
   ],
-  base: "/Dashboard/Dashboard/"
+  base: "/"
 })
