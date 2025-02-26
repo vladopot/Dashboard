@@ -1,5 +1,4 @@
 import { RootState } from '../../Redux/store';
-import React from 'react'
 import { useSelector } from 'react-redux';
 import { useNavigate  } from 'react-router';
 import styles from './UserPage.module.scss'
