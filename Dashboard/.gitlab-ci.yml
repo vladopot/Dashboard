@@ -1,4 +1,4 @@
-image: node:18
+image: node:lts
 
 cache:
   paths:
@@ -9,6 +9,7 @@ before_script:
 
 pages:
   script:
+    - npm install
     - npm run build
     - mv dist public
   artifacts:
