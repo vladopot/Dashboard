@@ -4,7 +4,6 @@ import Inspect from 'vite-plugin-inspect'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/Test_task/',
   plugins: [
     react(),
     Inspect()

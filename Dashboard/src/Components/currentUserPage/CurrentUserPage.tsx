@@ -1,14 +1,14 @@
 import { RootState } from '../../Redux/store';
 import { useSelector } from 'react-redux';
 import { useNavigate  } from 'react-router';
-import styles from './UserPage.module.scss'
+import styles from './currentUserPage.module.scss'
 import { useParams } from 'react-router';
 import { userModel } from '../../models/ResponseModel';
 import { EngLangDatas, RusLangDatas } from '../../models/languageDatas';
 import { Button } from 'antd';
 import { LeftOutlined } from '@ant-design/icons';
 
-const UserPage = () => {
+const CurrentUserPage = () => {
     const {id} = useParams();
     const navigate = useNavigate();
     const language = useSelector((state: RootState) => state.language.value);
@@ -113,4 +113,4 @@ const UserPage = () => {
   )
 }
 
-export default UserPage
+export default CurrentUserPage
